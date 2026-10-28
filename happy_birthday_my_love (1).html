@@ -1,0 +1,956 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Birthday, My Love! 💖</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,500;0,700;1,400&display=swap" rel="stylesheet">
+    <!-- Canvas Confetti Library -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        roseGold: '#B76E79',
+                        blushPink: '#FFD1DC',
+                        deepRose: '#E0115F',
+                        champagne: '#F7E7CE',
+                        softPink: '#FFF0F5',
+                        velvetRed: '#8B0000',
+                    },
+                    fontFamily: {
+                        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+                        serif: ['"Playfair Display"', 'serif'],
+                        cursive: ['"Dancing Script"', 'cursive'],
+                    },
+                    animation: {
+                        'float': 'float 6s ease-in-out infinite',
+                        'float-slow': 'float 9s ease-in-out infinite',
+                        'pulse-glow': 'pulseGlow 2.5s ease-in-out infinite',
+                        'shimmer': 'shimmer 2s linear infinite',
+                        'bounce-soft': 'bounceSoft 2s infinite',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0px) rotate(0deg)' },
+                            '50%': { transform: 'translateY(-15px) rotate(3deg)' },
+                        },
+                        pulseGlow: {
+                            '0%, 100%': { boxShadow: '0 0 15px rgba(224, 17, 95, 0.3)', transform: 'scale(1)' },
+                            '50%': { boxShadow: '0 0 30px rgba(224, 17, 95, 0.6)', transform: 'scale(1.02)' },
+                        },
+                        bounceSoft: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-8px)' }
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Custom Glowing & Glassmorphism styles */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.65);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.7);
+            box-shadow: 0 10px 30px -5px rgba(224, 17, 95, 0.08);
+        }
+        
+        .glass-dark {
+            background: rgba(30, 20, 25, 0.7);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .gold-gradient-text {
+            background: linear-gradient(135deg, #B76E79 0%, #D4AF37 50%, #E0115F 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .heart-particle {
+            position: absolute;
+            pointer-events: none;
+            animation: moveHeart 8s linear infinite;
+        }
+
+        @keyframes moveHeart {
+            0% { transform: translateY(100vh) scale(0) rotate(0deg); opacity: 0; }
+            20% { opacity: 0.8; }
+            100% { transform: translateY(-10vh) scale(1.2) rotate(360deg); opacity: 0; }
+        }
+
+        /* 3D Cake Candle Candle Flame */
+        .flame {
+            width: 14px;
+            height: 24px;
+            background: linear-gradient(to top, #ff9d00, #ff5e00, #ffff00);
+            border-radius: 50% 50% 20% 20%;
+            box-shadow: 0 0 15px #ff9d00, 0 0 25px #ff5e00;
+            animation: flicker 0.6s infinite alternate;
+            transform-origin: center bottom;
+        }
+
+        @keyframes flicker {
+            0% { transform: scale(1) rotate(-2deg); }
+            100% { transform: scale(1.15) rotate(2deg); }
+        }
+
+        .flame.extinguished {
+            display: none;
+        }
+
+        .smoke {
+            display: none;
+            width: 6px;
+            height: 20px;
+            background: rgba(200, 200, 200, 0.6);
+            border-radius: 10px;
+            animation: riseSmoke 1.5s ease-out forwards;
+        }
+
+        @keyframes riseSmoke {
+            0% { opacity: 0.8; transform: translateY(0) scaleX(1); }
+            100% { opacity: 0; transform: translateY(-30px) scaleX(3); filter: blur(4px); }
+        }
+
+        /* Perspective Flip Cards */
+        .perspective-1000 { perspective: 1000px; }
+        .transform-style-3d { transform-style: preserve-3d; }
+        .backface-hidden { backface-visibility: hidden; }
+        .rotate-y-180 { transform: rotateY(180deg); }
+
+        /* Shake animation for wrong quiz answers */
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            20%, 60% { transform: translateX(-10px); }
+            40%, 80% { transform: translateX(10px); }
+        }
+        .animate-shake {
+            animation: shake 0.4s ease-in-out;
+        }
+
+        /* Pulse glow for lock icon */
+        .lock-glow {
+            filter: drop-shadow(0 0 15px rgba(224, 17, 95, 0.8));
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #FFF0F5;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #B76E79;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-softPink via-white to-blushPink/30 font-sans text-gray-800 antialiased min-h-screen relative overflow-x-hidden">
+
+    <!-- Floating Background Particles (Hearts) -->
+    <div id="heartParticlesContainer" class="fixed inset-0 pointer-events-none z-0 overflow-hidden"></div>
+
+    <!-- 0. FUNKY INTERACTIVE UNLOCK OVERLAY / INTRO SCREEN -->
+    <div id="unlockOverlay" class="fixed inset-0 z-50 bg-gradient-to-br from-pink-900 via-purple-950 to-black text-white flex flex-col items-center justify-center p-4 transition-all duration-700 overflow-y-auto">
+        
+        <!-- Ambient Glowing Elements -->
+        <div class="absolute w-96 h-96 bg-roseGold/20 rounded-full blur-3xl pointer-events-none animate-pulse"></div>
+
+        <div class="max-w-xl w-full text-center relative z-10 glass-dark rounded-3xl p-6 sm:p-8 border border-white/20 shadow-2xl my-auto">
+            
+            <!-- Lock Icon Header -->
+            <div id="lockHeaderContainer" class="relative inline-block mb-4">
+                <div class="w-20 h-20 bg-gradient-to-tr from-roseGold to-deepRose rounded-full flex items-center justify-center text-3xl shadow-lg shadow-deepRose/50 mx-auto lock-glow animate-bounce-soft">
+                    <i id="lockIcon" class="fa-solid fa-lock"></i>
+                </div>
+                <span id="heartsFoundBadge" class="absolute -top-2 -right-2 bg-pink-500 text-white text-xs font-bold px-2.5 py-1 rounded-full shadow-md">
+                    Hearts: <span id="heartsFoundCount">0</span>/3
+                </span>
+            </div>
+
+            <h2 id="unlockTitle" class="font-serif text-3xl sm:text-4xl font-bold gold-gradient-text mb-2">Secret Love Portal</h2>
+            <p id="unlockSubtitle" class="text-xs sm:text-sm text-gray-300 font-light mb-6">Prove you're the true owner of my heart to enter your Birthday Realm! ✨</p>
+
+            <!-- GAME STEP 1: FIND 3 HIDDEN HEARTS -->
+            <div id="gameStepHearts" class="space-y-4">
+                <div class="p-4 bg-white/10 rounded-2xl border border-white/10 text-xs sm:text-sm text-pink-200">
+                    <p class="font-semibold mb-1"><i class="fa-solid fa-wand-magic-sparkles mr-1"></i> Challenge 1: Find 3 Secret Floating Hearts!</p>
+                    <p class="text-gray-300 text-xs">Hover & tap the magic glowing hearts floating nearby to power up the lock key.</p>
+                </div>
+
+                <!-- Floating Secret Heart Targets -->
+                <div class="relative h-44 bg-black/30 rounded-2xl border border-white/10 overflow-hidden flex items-center justify-center">
+                    <p class="text-xs text-gray-400 italic pointer-events-none">Search around this radar zone...</p>
+                    
+                    <button id="secretHeart1" onclick="collectHeart(1)" class="absolute top-4 left-6 text-2xl text-pink-400 animate-float hover:scale-125 transition-transform duration-200 cursor-pointer p-2 drop-shadow-lg">
+                        💖
+                    </button>
+                    <button id="secretHeart2" onclick="collectHeart(2)" class="absolute bottom-6 right-8 text-2xl text-roseGold animate-float-slow hover:scale-125 transition-transform duration-200 cursor-pointer p-2 drop-shadow-lg">
+                        💗
+                    </button>
+                    <button id="secretHeart3" onclick="collectHeart(3)" class="absolute top-12 right-1/3 text-2xl text-deepRose animate-bounce hover:scale-125 transition-transform duration-200 cursor-pointer p-2 drop-shadow-lg">
+                        ✨
+                    </button>
+                </div>
+            </div>
+
+            <!-- GAME STEP 2: FUNKY QUIZ / Q&A -->
+            <div id="gameStepQuiz" class="space-y-4 hidden">
+                <div id="quizCard" class="p-5 bg-white/10 rounded-2xl border border-white/20 text-left relative transition-all">
+                    <div class="flex justify-between items-center mb-2">
+                        <span id="quizQuestionCount" class="text-xs font-semibold text-roseGold uppercase tracking-widest">Question 1 of 3</span>
+                        <span id="quizTeaseMsg" class="text-xs text-pink-300 font-cursive italic"></span>
+                    </div>
+
+                    <h3 id="quizQuestionText" class="font-serif text-lg font-bold text-white mb-4">Question goes here?</h3>
+
+                    <!-- Options Grid -->
+                    <div id="quizOptionsContainer" class="grid grid-cols-1 gap-2.5">
+                        <!-- Options generated dynamically -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- GAME STEP 3: THE CHASE / DODGING BUTTON -->
+            <div id="gameStepChase" class="space-y-4 hidden">
+                <p class="text-sm text-pink-200 font-medium">Final Test! Press the unlocking button... if you can catch it! 😉</p>
+                <div class="relative h-40 bg-black/40 rounded-2xl border border-white/10 overflow-hidden flex items-center justify-center p-4">
+                    <button id="dodgingUnlockBtn" onmouseover="dodgeButton()" onclick="finishUnlock()" class="absolute px-6 py-3 rounded-full bg-gradient-to-r from-roseGold via-deepRose to-pink-500 text-white font-bold shadow-xl shadow-deepRose/50 transition-all duration-150 ease-out text-sm">
+                        ✨ Unlock My Birthday Page! ✨
+                    </button>
+                </div>
+            </div>
+
+            <!-- Progress Bar -->
+            <div class="w-full bg-white/10 h-2 rounded-full overflow-hidden mt-6">
+                <div id="unlockProgressBar" class="bg-gradient-to-r from-roseGold to-deepRose h-full w-1/3 transition-all duration-500"></div>
+            </div>
+            <span id="unlockProgressText" class="text-[10px] text-gray-400 uppercase tracking-widest mt-1 block">Stage 1: Collect Hearts</span>
+
+            <!-- Skip / Direct Password Option for Developer/Tester -->
+            <button onclick="skipUnlockPrompt()" class="mt-4 text-[11px] text-gray-400 hover:text-white underline transition-colors">
+                (Got a secret passcode? Click to skip)
+            </button>
+        </div>
+    </div>
+
+    <!-- Sticky Navigation Bar -->
+    <nav class="fixed top-0 left-0 right-0 z-40 px-4 py-3 bg-white/70 backdrop-blur-md border-b border-roseGold/20 transition-all duration-300">
+        <div class="max-w-6xl mx-auto flex justify-between items-center">
+            <a href="#" class="font-cursive text-2xl md:text-3xl font-bold text-roseGold tracking-wide hover:scale-105 transition-transform">
+                <span id="navNameHeader">My Princess</span> 💕
+            </a>
+
+            <!-- Quick Nav Links -->
+            <div class="hidden md:flex space-x-6 text-sm font-medium text-gray-700">
+                <a href="#memories" class="hover:text-deepRose transition-colors">Our Memories</a>
+                <a href="#videos" class="hover:text-deepRose transition-colors">Special Clips</a>
+                <a href="#letters" class="hover:text-deepRose transition-colors">Love Letters</a>
+                <a href="#cake" class="hover:text-deepRose transition-colors">Make a Wish</a>
+            </div>
+
+            <div class="flex items-center space-x-3">
+                <!-- Music Player Control Bar -->
+                <button id="musicToggleBtn" onclick="toggleAudio()" class="flex items-center space-x-2 px-3 py-1.5 rounded-full bg-roseGold/10 border border-roseGold/30 text-roseGold hover:bg-roseGold/20 transition-all text-xs md:text-sm font-semibold">
+                    <i id="musicIcon" class="fa-solid fa-music animate-spin" style="animation-duration: 4s;"></i>
+                    <span id="musicText">Play Music</span>
+                    <div id="equalizer" class="hidden flex items-end space-x-0.5 h-3">
+                        <span class="w-0.5 bg-roseGold animate-bounce h-2"></span>
+                        <span class="w-0.5 bg-roseGold animate-bounce h-3" style="animation-delay: 0.2s"></span>
+                        <span class="w-0.5 bg-roseGold animate-bounce h-1" style="animation-delay: 0.4s"></span>
+                    </div>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- MAIN CONTENT -->
+    <main class="relative z-10 pt-20">
+
+        <!-- 1. HERO SECTION -->
+        <section class="min-h-[85vh] flex flex-col justify-center items-center text-center px-4 relative py-12">
+            <!-- Glowing Ambient Circles -->
+            <div class="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-72 md:w-96 h-72 md:h-96 bg-roseGold/20 rounded-full blur-3xl -z-10 animate-pulse"></div>
+
+            <div class="inline-block px-4 py-1.5 rounded-full bg-white/80 border border-roseGold/30 text-roseGold text-xs md:text-sm font-semibold uppercase tracking-widest shadow-sm mb-6 animate-bounce-soft">
+                ✨ Today Is All About You ✨
+            </div>
+
+            <!-- EDIT HER NAME HERE -->
+            <h1 class="font-serif text-4xl sm:text-6xl md:text-7xl font-bold text-gray-900 leading-tight mb-4">
+                Happy Birthday, <br class="sm:hidden" />
+                <span id="gfNameDisplay" class="font-cursive gold-gradient-text text-5xl sm:text-7xl md:text-8xl block mt-2">My Sanu</span>
+            </h1>
+
+            <!-- EDIT HERO SUBTITLE / QUOTE HERE -->
+            <p id="heroSubtitleDisplay" class="text-base sm:text-xl text-gray-600 max-w-2xl font-light italic mb-8 px-2">
+                "In all the world, there is no heart for me like yours. In all the world, there is no love for you like mine."
+            </p>
+
+            <!-- Birthday Countdown / Live Counter -->
+            <div class="grid grid-cols-4 gap-2 sm:gap-4 mb-10 w-full max-w-md px-2">
+                <div class="glass-card rounded-2xl p-3 sm:p-4 text-center">
+                    <span id="timerDays" class="block font-serif text-2xl sm:text-4xl font-bold text-roseGold">00</span>
+                    <span class="text-xs text-gray-500 uppercase font-semibold">Days</span>
+                </div>
+                <div class="glass-card rounded-2xl p-3 sm:p-4 text-center">
+                    <span id="timerHours" class="block font-serif text-2xl sm:text-4xl font-bold text-roseGold">00</span>
+                    <span class="text-xs text-gray-500 uppercase font-semibold">Hours</span>
+                </div>
+                <div class="glass-card rounded-2xl p-3 sm:p-4 text-center">
+                    <span id="timerMinutes" class="block font-serif text-2xl sm:text-4xl font-bold text-roseGold">00</span>
+                    <span class="text-xs text-gray-500 uppercase font-semibold">Mins</span>
+                </div>
+                <div class="glass-card rounded-2xl p-3 sm:p-4 text-center">
+                    <span id="timerSeconds" class="block font-serif text-2xl sm:text-4xl font-bold text-roseGold">00</span>
+                    <span class="text-xs text-gray-500 uppercase font-semibold">Secs</span>
+                </div>
+            </div>
+
+            <!-- Call to Action Buttons -->
+            <div class="flex flex-wrap justify-center gap-4">
+                <button onclick="triggerSurpriseConfetti()" class="px-8 py-3.5 rounded-full bg-gradient-to-r from-roseGold to-deepRose text-white font-semibold shadow-lg shadow-roseGold/30 hover:scale-105 transition-all flex items-center space-x-2">
+                    <i class="fa-solid fa-gift text-lg"></i>
+                    <span>Shower With Love!</span>
+                </button>
+                <a href="#memories" class="px-8 py-3.5 rounded-full glass-card text-gray-800 font-semibold hover:bg-white/90 transition-all flex items-center space-x-2">
+                    <i class="fa-solid fa-heart text-roseGold"></i>
+                    <span>Explore Our Journey</span>
+                </a>
+            </div>
+        </section>
+
+        <!-- 2. MEMORY GALLERY / PHOTO SLOTS SECTION -->
+        <section id="memories" class="max-w-6xl mx-auto px-4 py-16">
+            <div class="text-center mb-12">
+                <span class="text-xs font-semibold text-roseGold uppercase tracking-widest">Our Unforgettable Moments</span>
+                <h2 class="font-serif text-3xl md:text-5xl font-bold text-gray-900 mt-1">Photo Gallery</h2>
+                <div class="w-16 h-1 bg-roseGold/50 mx-auto mt-3 rounded-full"></div>
+            </div>
+
+            <!-- Photos Grid (STATIC HTML PHOTO CARDS - EDIT SRC AND CAPTIONS HERE) -->
+            <div id="photoGalleryGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                
+                <!-- PHOTO CARD 1 -->
+                <div onclick="openLightbox('img', 'https://lh3.googleusercontent.com/d/1Y_6wDNoTOAZnWOLBdVv9V2wwIGOatgjI', 'Our First Picture Together 💕')" class="glass-card p-4 rounded-3xl transform hover:-translate-y-2 hover:rotate-1 transition-all duration-300 shadow-md hover:shadow-xl cursor-pointer group">
+                    <div class="overflow-hidden rou00&q=80nded-2xl relative aspect-[4/5] bg-gray-100 mb-3">
+                        <img src="https://lh3.googleusercontent.com/d/1Y_6wDNoTOAZnWOLBdVv9V2wwIGOatgjI" alt="Our First Picture Together 💕" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" onerror="this.src='https://placehold.co/600x800/FFD1DC/B76E79?text=Our+Special+Memory'">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-4">
+                            <span class="text-white text-xs font-semibold"><i class="fa-solid fa-magnifying-glass-plus mr-1"></i> View Full Screen</span>
+                        </div>
+                    </div>
+                    <p class="font-serif italic text-center text-gray-700 font-medium text-sm sm:text-base">Our First Picture Together 💕</p>
+                </div>
+
+                <!-- PHOTO CARD 2 -->
+                <div onclick="openLightbox('img', 'https://lh3.googleusercontent.com/d/16jSV5ZCTQ_quVstL9x-RlmOYNEcS1Zsm', 'Haato meh hath 🌅')" class="glass-card p-4 rounded-3xl transform hover:-translate-y-2 hover:rotate-1 transition-all duration-300 shadow-md hover:shadow-xl cursor-pointer group">
+                    <div class="overflow-hidden rounded-2xl relative aspect-[4/5] bg-gray-100 mb-3">
+                        <img src="https://lh3.googleusercontent.com/d/16jSV5ZCTQ_quVstL9x-RlmOYNEcS1Zsm" alt="Haato meh hath 🌅" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" onerror="this.src='https://placehold.co/600x800/FFD1DC/B76E79?text=Our+Special+Memory'">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-4">
+                            <span class="text-white text-xs font-semibold"><i class="fa-solid fa-magnifying-glass-plus mr-1"></i> View Full Screen</span>
+                        </div>
+                    </div>
+                    <p class="font-serif italic text-center text-gray-700 font-medium text-sm sm:text-base">Haato meh hath 🌅</p>
+                </div>
+
+                <!-- PHOTO CARD 3 -->
+                <div onclick="openLightbox('img', 'https://lh3.googleusercontent.com/d/16qFGTMzUcvNdehSa726gH4zhzpENm1HK', 'Unforgettable Golden Hour 🥂')" class="glass-card p-4 rounded-3xl transform hover:-translate-y-2 hover:rotate-1 transition-all duration-300 shadow-md hover:shadow-xl cursor-pointer group">
+                    <div class="overflow-hidden rounded-2xl relative aspect-[4/5] bg-gray-100 mb-3">
+                        <img src="https://lh3.googleusercontent.com/d/16qFGTMzUcvNdehSa726gH4zhzpENm1HK" alt="Unforgettable Golden Hour 🥂" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" onerror="this.src='https://placehold.co/600x800/FFD1DC/B76E79?text=Our+Special+Memory'">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-4">
+                            <span class="text-white text-xs font-semibold"><i class="fa-solid fa-magnifying-glass-plus mr-1"></i> View Full Screen</span>
+                        </div>
+                    </div>
+                    <p class="font-serif italic text-center text-gray-700 font-medium text-sm sm:text-base">Unforgettable Golden Hour 🥂</p>
+                </div>
+
+                <!-- PHOTO CARD 4 -->
+                <div onclick="openLightbox('img', 'https://lh3.googleusercontent.com/d/18B9i7xaZtkFPTeuGehrs2XvrWURi18FE', 'Pashupatinath Darshan 😊')" class="glass-card p-4 rounded-3xl transform hover:-translate-y-2 hover:rotate-1 transition-all duration-300 shadow-md hover:shadow-xl cursor-pointer group">
+                    <div class="overflow-hidden rounded-2xl relative aspect-[4/5] bg-gray-100 mb-3">
+                        <img src="https://lh3.googleusercontent.com/d/18B9i7xaZtkFPTeuGehrs2XvrWURi18FE" alt="Pashupatinath Darshan 😊" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" onerror="this.src='https://lh3.googleusercontent.com/d/18B9i7xaZtkFPTeuGehrs2XvrWURi18FE'">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-4">
+                            <span class="text-white text-xs font-semibold"><i class="fa-solid fa-magnifying-glass-plus mr-1"></i> View Full Screen</span>
+                        </div>
+                    </div>
+                    <p class="font-serif italic text-center text-gray-700 font-medium text-sm sm:text-base">Pashupatinath Darshan 😊</p>
+                </div>
+
+                <!-- PHOTO CARD 5 -->
+                <div onclick="openLightbox('img', 'https://lh3.googleusercontent.com/d/1LNpSnanIpLWxxMPAoEK5XOW0NF9DEpYf', 'Our First Class Bunk ✨')" class="glass-card p-4 rounded-3xl transform hover:-translate-y-2 hover:rotate-1 transition-all duration-300 shadow-md hover:shadow-xl cursor-pointer group">
+                    <div class="overflow-hidden rounded-2xl relative aspect-[4/5] bg-gray-100 mb-3">
+                        <img src="https://lh3.googleusercontent.com/d/1LNpSnanIpLWxxMPAoEK5XOW0NF9DEpYf" alt="Our First Class Bunk ✨" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" onerror="this.src='https://placehold.co/600x800/FFD1DC/B76E79?text=Our+Special+Memory'">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-4">
+                            <span class="text-white text-xs font-semibold"><i class="fa-solid fa-magnifying-glass-plus mr-1"></i> View Full Screen</span>
+                        </div>
+                    </div>
+                    <p class="font-serif italic text-center text-gray-700 font-medium text-sm sm:text-base">Our First Class Bunk ✨</p>
+                </div>
+
+                <!-- PHOTO CARD 6 -->
+                <div onclick="openLightbox('img', 'https://lh3.googleusercontent.com/d/1uSShSDhKb7VG90IPf0qGXPjYyJd3UJC6', 'Always My Favorite Smile 💖')" class="glass-card p-4 rounded-3xl transform hover:-translate-y-2 hover:rotate-1 transition-all duration-300 shadow-md hover:shadow-xl cursor-pointer group">
+                    <div class="overflow-hidden rounded-2xl relative aspect-[4/5] bg-gray-100 mb-3">
+                        <img src="https://lh3.googleusercontent.com/d/1uSShSDhKb7VG90IPf0qGXPjYyJd3UJC6" alt="Always My Favorite Smile 💖" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" onerror="this.src='https://placehold.co/600x800/FFD1DC/B76E79?text=Our+Special+Memory'">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-4">
+                            <span class="text-white text-xs font-semibold"><i class="fa-solid fa-magnifying-glass-plus mr-1"></i> View Full Screen</span>
+                        </div>
+                    </div>
+                    <p class="font-serif italic text-center text-gray-700 font-medium text-sm sm:text-base">Always My Favorite Smile 💖</p>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- 3. VIDEO PRESENTATION SECTION -->
+        <section id="videos" class="bg-gradient-to-b from-transparent via-softPink/50 to-transparent py-16 px-4">
+            <div class="max-w-6xl mx-auto">
+                <div class="text-center mb-12">
+                    <span class="text-xs font-semibold text-roseGold uppercase tracking-widest">Captured Motion & Smiles</span>
+                    <h2 class="font-serif text-3xl md:text-5xl font-bold text-gray-900 mt-1">Special Video Reel</h2>
+                    <div class="w-16 h-1 bg-roseGold/50 mx-auto mt-3 rounded-full"></div>
+                </div>
+
+                <!-- VIDEO SLOTS (EDIT MP4 URLS AND CAPTIONS HERE) -->
+                <div id="videoContainerGrid" class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <!-- VIDEO CARD 1 -->
+                    <div class="glass-card p-4 rounded-3xl shadow-lg border border-roseGold/20">
+                        <div class="rounded-2xl overflow-hidden aspect-video bg-black relative mb-3 group">
+                            
+                               <iframe src="https://drive.google.com/file/d/1VUZ9dpG4l8bQO1YPhFUiuNloCvNUqpUU/preview" width="100%" height="300px" allow="autoplay"></iframe>
+                        
+                            
+                        </div>
+                        <p class="font-serif text-center font-semibold text-gray-800 text-sm md:text-base">You might have thought that I forgot this. But I will neverrr.</p>
+                    </div>
+
+                    <!-- VIDEO CARD 2 -->
+                    <div class="glass-card p-4 rounded-3xl shadow-lg border border-roseGold/20">
+                        <div class="rounded-2xl overflow-hidden aspect-video bg-black relative mb-3 group">
+                               <iframe src="https://drive.google.com/file/d/1wGNVMDhzQLmTHnAkV8sUpsxuoXaC8ay3/preview" width="100%" height="300px" allow="autoplay"></iframe>
+                            
+                        </div>
+                        <p class="font-serif text-center font-semibold text-gray-800 text-sm md:text-base">No captions</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 4. LOVE LETTERS & SWEET NOTES SECTION -->
+        <section id="letters" class="max-w-5xl mx-auto px-4 py-16">
+            <div class="text-center mb-12">
+                <span class="text-xs font-semibold text-roseGold uppercase tracking-widest">From My Heart To Yours</span>
+                <h2 class="font-serif text-3xl md:text-5xl font-bold text-gray-900 mt-1">Birthday Love Letters</h2>
+                <div class="w-16 h-1 bg-roseGold/50 mx-auto mt-3 rounded-full"></div>
+            </div>
+
+            <!-- Envelope Modals / Interactive Letter Envelopes -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-16">
+                <!-- Envelope 1 -->
+                <div onclick="openLetter(1)" class="glass-card rounded-3xl p-6 text-center cursor-pointer transform hover:-translate-y-2 hover:shadow-xl transition-all border border-roseGold/30 relative group">
+                    <div class="w-16 h-16 bg-blushPink/50 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform text-roseGold text-2xl">
+                        <i class="fa-solid fa-envelope-open-text"></i>
+                    </div>
+                    <span class="text-xs uppercase font-semibold text-roseGold tracking-wider">Letter #1</span>
+                    <h3 class="font-serif text-lg font-bold text-gray-800 mt-1" id="letterTitle1">The Day We Met</h3>
+                    <p class="text-xs text-gray-500 mt-2">Click to open & read my sweet note...</p>
+                </div>
+
+                <!-- Envelope 2 -->
+                <div onclick="openLetter(2)" class="glass-card rounded-3xl p-6 text-center cursor-pointer transform hover:-translate-y-2 hover:shadow-xl transition-all border border-roseGold/30 relative group">
+                    <div class="w-16 h-16 bg-blushPink/50 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform text-roseGold text-2xl">
+                        <i class="fa-solid fa-heart-pulse"></i>
+                    </div>
+                    <span class="text-xs uppercase font-semibold text-roseGold tracking-wider">Letter #2</span>
+                    <h3 class="font-serif text-lg font-bold text-gray-800 mt-1" id="letterTitle2">Why You Are So Special</h3>
+                    <p class="text-xs text-gray-500 mt-2">Click to open & read my sweet note...</p>
+                </div>
+
+                <!-- Envelope 3 -->
+                <div onclick="openLetter(3)" class="glass-card rounded-3xl p-6 text-center cursor-pointer transform hover:-translate-y-2 hover:shadow-xl transition-all border border-roseGold/30 relative group">
+                    <div class="w-16 h-16 bg-blushPink/50 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform text-roseGold text-2xl">
+                        <i class="fa-solid fa-sparkles"></i>
+                    </div>
+                    <span class="text-xs uppercase font-semibold text-roseGold tracking-wider">Letter #3</span>
+                    <h3 class="font-serif text-lg font-bold text-gray-800 mt-1" id="letterTitle3">My Birthday Promise</h3>
+                    <p class="text-xs text-gray-500 mt-2">Click to open & read my sweet note...</p>
+                </div>
+            </div>
+
+            <!-- "Reasons Why I Love You" Card Deck Grid -->
+            <div class="glass-card rounded-3xl p-6 md:p-10 border border-roseGold/30">
+                <h3 class="font-serif text-2xl font-bold text-gray-800 text-center mb-6">Reasons Why I Love You Endless 💕</h3>
+                <div id="reasonsGrid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+                    <!-- EDIT REASONS HERE IN THE LIST -->
+                    <div class="p-4 rounded-2xl bg-white/80 border border-roseGold/20 shadow-sm flex items-center space-x-3 hover:bg-roseGold/10 transition-colors">
+                        <span class="w-8 h-8 rounded-full bg-roseGold/20 text-roseGold font-bold text-xs flex items-center justify-center shrink-0">1</span>
+                        <p class="text-xs sm:text-sm text-gray-700 font-medium">Your radiant smile brightens my entire room.</p>
+                    </div>
+                    <div class="p-4 rounded-2xl bg-white/80 border border-roseGold/20 shadow-sm flex items-center space-x-3 hover:bg-roseGold/10 transition-colors">
+                        <span class="w-8 h-8 rounded-full bg-roseGold/20 text-roseGold font-bold text-xs flex items-center justify-center shrink-0">2</span>
+                        <p class="text-xs sm:text-sm text-gray-700 font-medium">How you laugh at my silliness.</p>
+                    </div>
+                    <div class="p-4 rounded-2xl bg-white/80 border border-roseGold/20 shadow-sm flex items-center space-x-3 hover:bg-roseGold/10 transition-colors">
+                        <span class="w-8 h-8 rounded-full bg-roseGold/20 text-roseGold font-bold text-xs flex items-center justify-center shrink-0">3</span>
+                        <p class="text-xs sm:text-sm text-gray-700 font-medium">Your gentle & caring heart.</p>
+                    </div>
+                    <div class="p-4 rounded-2xl bg-white/80 border border-roseGold/20 shadow-sm flex items-center space-x-3 hover:bg-roseGold/10 transition-colors">
+                        <span class="w-8 h-8 rounded-full bg-roseGold/20 text-roseGold font-bold text-xs flex items-center justify-center shrink-0">4</span>
+                        <p class="text-xs sm:text-sm text-gray-700 font-medium">The warmth of your bear hugs.</p>
+                    </div>
+                    <div class="p-4 rounded-2xl bg-white/80 border border-roseGold/20 shadow-sm flex items-center space-x-3 hover:bg-roseGold/10 transition-colors">
+                        <span class="w-8 h-8 rounded-full bg-roseGold/20 text-roseGold font-bold text-xs flex items-center justify-center shrink-0">5</span>
+                        <p class="text-xs sm:text-sm text-gray-700 font-medium">How you crave for my childish behaviour</p>
+                    </div>
+                    <div class="p-4 rounded-2xl bg-white/80 border border-roseGold/20 shadow-sm flex items-center space-x-3 hover:bg-roseGold/10 transition-colors">
+                        <span class="w-8 h-8 rounded-full bg-roseGold/20 text-roseGold font-bold text-xs flex items-center justify-center shrink-0">6</span>
+                        <p class="text-xs sm:text-sm text-gray-700 font-medium">Simply being YOU every day.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 5. INTERACTIVE BIRTHDAY CAKE & WISH -->
+        <section id="cake" class="max-w-4xl mx-auto px-4 py-16 text-center">
+            <div class="mb-8">
+                <span class="text-xs font-semibold text-roseGold uppercase tracking-widest">Make A Wish!</span>
+                <h2 class="font-serif text-3xl md:text-5xl font-bold text-gray-900 mt-1">Blow Out The Candles 🎂</h2>
+                <p class="text-sm text-gray-600 mt-2">Tap/Click the candles or button below to blow them out!</p>
+            </div>
+
+            <!-- CSS Interactive Cake Container -->
+            <div class="relative w-64 h-64 mx-auto mb-8 flex flex-col items-center justify-end">
+                
+                <!-- Candles Row -->
+                <div class="flex justify-center space-x-6 z-20 mb-[-4px]">
+                    <!-- Candle 1 -->
+                    <div onclick="blowCandles()" class="cursor-pointer flex flex-col items-center group">
+                        <div class="flame" id="flame1"></div>
+                        <div class="smoke" id="smoke1"></div>
+                        <div class="w-3 h-12 bg-gradient-to-r from-pink-300 via-roseGold to-pink-400 rounded-t-sm shadow-inner"></div>
+                    </div>
+                    <!-- Candle 2 -->
+                    <div onclick="blowCandles()" class="cursor-pointer flex flex-col items-center group">
+                        <div class="flame" id="flame2"></div>
+                        <div class="smoke" id="smoke2"></div>
+                        <div class="w-3 h-14 bg-gradient-to-r from-yellow-200 via-yellow-400 to-yellow-300 rounded-t-sm shadow-inner"></div>
+                    </div>
+                    <!-- Candle 3 -->
+                    <div onclick="blowCandles()" class="cursor-pointer flex flex-col items-center group">
+                        <div class="flame" id="flame3"></div>
+                        <div class="smoke" id="smoke3"></div>
+                        <div class="w-3 h-12 bg-gradient-to-r from-pink-300 via-roseGold to-pink-400 rounded-t-sm shadow-inner"></div>
+                    </div>
+                </div>
+
+                <!-- Cake Top Layer -->
+                <div class="w-40 h-16 bg-gradient-to-r from-blushPink via-white to-blushPink rounded-t-3xl shadow-md border-b-4 border-roseGold/30 relative flex justify-center items-center">
+                    <span class="text-roseGold text-xs font-bold uppercase tracking-widest">Sweet Princess</span>
+                    <!-- Frosting Drops -->
+                    <div class="absolute -bottom-2 inset-x-0 flex justify-around">
+                        <div class="w-4 h-4 bg-white rounded-full"></div>
+                        <div class="w-5 h-5 bg-white rounded-full"></div>
+                        <div class="w-4 h-4 bg-white rounded-full"></div>
+                        <div class="w-5 h-5 bg-white rounded-full"></div>
+                    </div>
+                </div>
+
+                <!-- Cake Middle Layer -->
+                <div class="w-52 h-16 bg-gradient-to-r from-roseGold via-blushPink to-roseGold border-b-4 border-roseGold/40 relative"></div>
+
+                <!-- Cake Base Layer -->
+                <div class="w-64 h-20 bg-gradient-to-r from-pink-200 via-white to-pink-200 rounded-t-xl shadow-xl flex justify-center items-center">
+                    <span class="font-cursive text-roseGold text-xl font-bold">Happy Birthday!</span>
+                </div>
+
+                <!-- Cake Plate -->
+                <div class="w-72 h-4 bg-gray-200 rounded-full shadow-lg border-t border-white"></div>
+            </div>
+
+            <!-- Cake Controls -->
+            <button id="blowBtn" onclick="blowCandles()" class="px-8 py-3.5 rounded-full bg-gradient-to-r from-roseGold to-deepRose text-white font-semibold shadow-lg shadow-roseGold/30 hover:scale-105 transition-all inline-flex items-center space-x-2">
+                <i class="fa-solid fa-wind"></i>
+                <span id="blowBtnText">Blow Out Candles!</span>
+            </button>
+        </section>
+
+        <!-- FOOTER -->
+        <footer class="text-center py-12 px-4 border-t border-roseGold/20 mt-16 bg-white/40">
+            <p class="font-cursive text-3xl text-roseGold font-bold mb-2">Forever & Always Yours</p>
+            <p class="text-xs text-gray-500">Made with endless love for your special day 💕</p>
+        </footer>
+
+    </main>
+
+    <!-- READ LETTER MODAL POPUP -->
+    <div id="letterModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm hidden opacity-0 transition-opacity duration-300">
+        <div class="glass-card max-w-lg w-full rounded-3xl p-6 md:p-8 relative shadow-2xl transform scale-95 transition-transform duration-300" id="letterModalCard">
+            <button onclick="closeLetterModal()" class="absolute top-4 right-4 w-9 h-9 rounded-full bg-gray-100 hover:bg-gray-200 flex items-center justify-center text-gray-600 transition-colors">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+            <div class="text-center mb-4">
+                <span id="modalLetterBadge" class="text-xs font-semibold text-roseGold uppercase tracking-widest">Love Note</span>
+                <h3 id="modalLetterTitle" class="font-serif text-2xl font-bold text-gray-800 mt-1">Title</h3>
+            </div>
+            <div class="font-serif italic text-gray-700 leading-relaxed text-base md:text-lg mb-6 whitespace-pre-line text-left bg-white/60 p-4 rounded-2xl border border-roseGold/20 max-h-80 overflow-y-auto" id="modalLetterBody">
+                Message...
+            </div>
+            <div class="text-right font-cursive text-2xl text-roseGold font-bold" id="modalLetterSign">
+                Forever Yours ❤️
+            </div>
+        </div>
+    </div>
+
+    <!-- PHOTO/MEDIA LIGHTBOX MODAL -->
+    <div id="lightboxModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md hidden opacity-0 transition-opacity duration-300">
+        <button onclick="closeLightbox()" class="absolute top-6 right-6 text-white text-3xl hover:text-roseGold transition-colors z-10">
+            <i class="fa-solid fa-xmark"></i>
+        </button>
+        <div class="max-w-4xl w-full text-center">
+            <img id="lightboxImg" class="max-h-[80vh] mx-auto rounded-2xl shadow-2xl object-contain hidden" src="" alt="Enlarged photo">
+            <video id="lightboxVid" class="max-h-[80vh] mx-auto rounded-2xl shadow-2xl hidden" controls></video>
+            <p id="lightboxCaption" class="text-white font-serif italic text-lg mt-4"></p>
+        </div>
+    </div>
+
+    <!-- AUDIO PLAYER ELEMENT (PASTE MP3 FILE LINK IN SRC ATTRIBUTE) -->
+    <audio id="bgAudio" loop preload="auto">
+        <source src="Alfaaz Hamza Malik x Zain Zohaib Official Visualiser.mp3" type="audio/mpeg">
+    </audio>
+
+    <script>
+        // --- EDIT LOVE LETTERS DATA DIRECTLY HERE ---
+        const loveLetters = [
+            {
+                title: "The Day We Met",
+                body: "From the very moment you walked into my life, everything became brighter and warmer. Your smile has a way of turning my worst days into pure sunshine. Happy birthday to the person who holds my whole world. I still remember you running behind me near Bhotepul and calling me while our first day of college."
+            },
+            {
+                title: "Why You Are So Special",
+                body: "It's not just how gorgeous you look every single day—it's your kind heart, the way you care for everyone around you, the way you treat my mom and how safe I feel whenever I am with you."
+            },
+            {
+                title: "My Birthday Promise",
+                body: "My promise to you today and every day is to make you smile, support all your dreams, bring you tulips when I get there, and love you more than yesterday but less than tomorrow!"
+            }
+        ];
+
+        // --- EDIT QUIZ QUESTIONS & ANSWERS DIRECTLY HERE ---
+        const quizQuestions = [
+            {
+                q: "Who loves who more in this relationship?",
+                options: ["You love me more", "I love you way more! 💕", "It's an endless tie!"],
+                correct: 1,
+                tease: "Haha, nice try! But I definitely love you more! 😉"
+            },
+            {
+                q: "What is my absolute favorite thing about you?",
+                options: ["Your cute smile", "Your kind heart", "Literally EVERYTHING! ✨"],
+                correct: 2,
+                tease: "Trick question! It's impossible to choose just one!"
+            },
+            {
+                q: "Are you ready to see your birthday surprise?",
+                options: ["YES, show me! 🎉", "Maybe... if there's cake", "Always ready with you!"],
+                correct: 0,
+                tease: "Let's goooo! 🚀"
+            }
+        ];
+
+        // --- UNLOCK SCREEN MINI-GAME STATE ---
+        let heartsFound = 0;
+        let currentQuizIndex = 0;
+
+        // --- INIT APPLICATION ---
+        document.addEventListener("DOMContentLoaded", () => {
+            initHeartParticles();
+            initTimer();
+            initQuiz();
+        });
+
+        // --- GAME STEP 1: COLLECT SECRET HEARTS ---
+        function collectHeart(id) {
+            const btn = document.getElementById(`secretHeart${id}`);
+            if (!btn || btn.style.display === "none") return;
+
+            btn.style.display = "none";
+            heartsFound++;
+            document.getElementById("heartsFoundCount").innerText = heartsFound;
+
+            confetti({ particleCount: 15, spread: 40, origin: { y: 0.5 } });
+
+            if (heartsFound >= 3) {
+                setTimeout(() => {
+                    document.getElementById("gameStepHearts").classList.add("hidden");
+                    document.getElementById("gameStepQuiz").classList.remove("hidden");
+                    document.getElementById("unlockProgressBar").style.width = "66%";
+                    document.getElementById("unlockProgressText").innerText = "Stage 2: Answer Love Quiz";
+                }, 400);
+            }
+        }
+
+        // --- GAME STEP 2: LOVE QUIZ ---
+        function initQuiz() {
+            if (currentQuizIndex >= quizQuestions.length) {
+                document.getElementById("gameStepQuiz").classList.add("hidden");
+                document.getElementById("gameStepChase").classList.remove("hidden");
+                document.getElementById("unlockProgressBar").style.width = "100%";
+                document.getElementById("unlockProgressText").innerText = "Final Stage: Catch The Button!";
+                return;
+            }
+
+            const currentQ = quizQuestions[currentQuizIndex];
+            document.getElementById("quizQuestionCount").innerText = `Question ${currentQuizIndex + 1} of ${quizQuestions.length}`;
+            document.getElementById("quizQuestionText").innerText = currentQ.q;
+            document.getElementById("quizTeaseMsg").innerText = "";
+
+            const optionsContainer = document.getElementById("quizOptionsContainer");
+            optionsContainer.innerHTML = "";
+
+            currentQ.options.forEach((optText, optIdx) => {
+                const btn = document.createElement("button");
+                btn.className = "w-full py-2.5 px-4 rounded-xl bg-white/10 hover:bg-white/20 border border-white/20 text-white text-xs sm:text-sm font-medium text-left transition-all hover:scale-[1.01] flex justify-between items-center";
+                btn.innerHTML = `<span>${optText}</span> <i class="fa-solid fa-chevron-right text-xs opacity-50"></i>`;
+                btn.onclick = () => handleQuizAnswer(optIdx);
+                optionsContainer.appendChild(btn);
+            });
+        }
+
+        function handleQuizAnswer(selectedIndex) {
+            const currentQ = quizQuestions[currentQuizIndex];
+            const quizCard = document.getElementById("quizCard");
+
+            if (selectedIndex === currentQ.correct) {
+                confetti({ particleCount: 25, spread: 50 });
+                currentQuizIndex++;
+                initQuiz();
+            } else {
+                quizCard.classList.add("animate-shake");
+                document.getElementById("quizTeaseMsg").innerText = currentQ.tease || "Wrong answer! Try again! 😜";
+                setTimeout(() => quizCard.classList.remove("animate-shake"), 500);
+            }
+        }
+
+        // --- GAME STEP 3: DODGING BUTTON CHASE ---
+        let dodgeCount = 0;
+        function dodgeButton() {
+            if (dodgeCount >= 4) return;
+
+            const btn = document.getElementById("dodgingUnlockBtn");
+            const randomX = (Math.random() - 0.5) * 180;
+            const randomY = (Math.random() - 0.5) * 80;
+
+            btn.style.transform = `translate(${randomX}px, ${randomY}px)`;
+            dodgeCount++;
+
+            if (dodgeCount === 2) {
+                btn.innerText = "Too slow! Try again! 😜";
+            } else if (dodgeCount === 4) {
+                btn.innerText = "Okay okay, you got me! Click now! 💕";
+                btn.style.transform = `translate(0px, 0px)`;
+            }
+        }
+
+        // --- FINISH UNLOCK SEQUENCE ---
+        function finishUnlock() {
+            const lockIcon = document.getElementById("lockIcon");
+            lockIcon.className = "fa-solid fa-lock-open text-yellow-300";
+
+            confetti({
+                particleCount: 150,
+                spread: 100,
+                origin: { y: 0.5 },
+                colors: ['#B76E79', '#FFD1DC', '#E0115F', '#F7E7CE']
+            });
+
+            const overlay = document.getElementById("unlockOverlay");
+            overlay.style.opacity = "0";
+            overlay.style.transform = "scale(1.05)";
+
+            setTimeout(() => {
+                overlay.style.display = "none";
+                toggleAudio();
+            }, 700);
+        }
+
+        function skipUnlockPrompt() {
+            finishUnlock();
+        }
+
+        // --- FLOATING HEARTS BACKGROUND ---
+        function initHeartParticles() {
+            const container = document.getElementById("heartParticlesContainer");
+            const hearts = ["💖", "💕", "🌸", "✨", "❤️", "💗"];
+            
+            for (let i = 0; i < 20; i++) {
+                const heart = document.createElement("div");
+                heart.className = "heart-particle text-xl md:text-2xl";
+                heart.innerText = hearts[Math.floor(Math.random() * hearts.length)];
+                heart.style.left = `${Math.random() * 100}%`;
+                heart.style.animationDelay = `${Math.random() * 6}s`;
+                heart.style.animationDuration = `${6 + Math.random() * 6}s`;
+                container.appendChild(heart);
+            }
+        }
+
+        // --- TIMER SIMULATION ---
+        function initTimer() {
+            let days = 0, hours = 0, minutes = 0, seconds = 0;
+            setInterval(() => {
+                seconds++;
+                if (seconds >= 60) { seconds = 0; minutes++; }
+                if (minutes >= 60) { minutes = 0; hours++; }
+                
+                document.getElementById("timerDays").innerText = "00";
+                document.getElementById("timerHours").innerText = String(hours).padStart(2, '0');
+                document.getElementById("timerMinutes").innerText = String(minutes).padStart(2, '0');
+                document.getElementById("timerSeconds").innerText = String(seconds).padStart(2, '0');
+            }, 1000);
+        }
+
+        // --- MUSIC PLAYER CONTROLS ---
+        let isPlaying = false;
+        function toggleAudio() {
+            const audio = document.getElementById("bgAudio");
+            const btnText = document.getElementById("musicText");
+            const equalizer = document.getElementById("equalizer");
+            const musicIcon = document.getElementById("musicIcon");
+
+            if (isPlaying) {
+                audio.pause();
+                btnText.innerText = "Play Music";
+                equalizer.classList.add("hidden");
+                musicIcon.classList.remove("text-deepRose");
+                isPlaying = false;
+            } else {
+                audio.play().then(() => {
+                    btnText.innerText = "Playing...";
+                    equalizer.classList.remove("hidden");
+                    musicIcon.classList.add("text-deepRose");
+                    isPlaying = true;
+                }).catch(err => {
+                    console.log("Audio autoplay prevented by browser: ", err);
+                });
+            }
+        }
+
+        // --- CONFETTI TRIGGER ---
+        function triggerSurpriseConfetti() {
+            confetti({
+                particleCount: 120,
+                spread: 80,
+                origin: { y: 0.6 },
+                colors: ['#B76E79', '#FFD1DC', '#E0115F', '#F7E7CE']
+            });
+        }
+
+        // --- CANDLE BLOW INTERACTION ---
+        let candlesBlown = false;
+        function blowCandles() {
+            if (candlesBlown) return;
+
+            for (let i = 1; i <= 3; i++) {
+                const flame = document.getElementById(`flame${i}`);
+                const smoke = document.getElementById(`smoke${i}`);
+                if (flame) flame.classList.add("extinguished");
+                if (smoke) smoke.style.display = "block";
+            }
+
+            candlesBlown = true;
+            document.getElementById("blowBtnText").innerText = "Wishes Sent! 💕";
+            
+            const duration = 3 * 1000;
+            const end = Date.now() + duration;
+
+            (function frame() {
+                confetti({
+                    particleCount: 5,
+                    angle: 60,
+                    spread: 55,
+                    origin: { x: 0 },
+                    colors: ['#E0115F', '#FFD1DC', '#B76E79']
+                });
+                confetti({
+                    particleCount: 5,
+                    angle: 120,
+                    spread: 55,
+                    origin: { x: 1 },
+                    colors: ['#E0115F', '#FFD1DC', '#B76E79']
+                });
+
+                if (Date.now() < end) {
+                    requestAnimationFrame(frame);
+                }
+            })();
+        }
+
+        // --- LETTER MODAL HANDLERS ---
+        function openLetter(index) {
+            const letterData = loveLetters[index - 1];
+            if (!letterData) return;
+
+            document.getElementById("modalLetterBadge").innerText = `Love Letter #${index}`;
+            document.getElementById("modalLetterTitle").innerText = letterData.title;
+            document.getElementById("modalLetterBody").innerText = letterData.body;
+
+            const modal = document.getElementById("letterModal");
+            const card = document.getElementById("letterModalCard");
+
+            modal.classList.remove("hidden");
+            setTimeout(() => {
+                modal.classList.remove("opacity-0");
+                card.classList.remove("scale-95");
+            }, 10);
+        }
+
+        function closeLetterModal() {
+            const modal = document.getElementById("letterModal");
+            const card = document.getElementById("letterModalCard");
+
+            modal.classList.add("opacity-0");
+            card.classList.add("scale-95");
+            setTimeout(() => {
+                modal.classList.add("hidden");
+            }, 300);
+        }
+
+        // --- LIGHTBOX HANDLERS ---
+        function openLightbox(type, src, caption) {
+            const modal = document.getElementById("lightboxModal");
+            const img = document.getElementById("lightboxImg");
+            const vid = document.getElementById("lightboxVid");
+            const cap = document.getElementById("lightboxCaption");
+
+            cap.innerText = caption || "";
+
+            if (type === 'img') {
+                img.src = src;
+                img.classList.remove("hidden");
+                vid.classList.add("hidden");
+            }
+
+            modal.classList.remove("hidden");
+            setTimeout(() => modal.classList.remove("opacity-0"), 10);
+        }
+
+        function closeLightbox() {
+            const modal = document.getElementById("lightboxModal");
+            modal.classList.add("opacity-0");
+            setTimeout(() => modal.classList.add("hidden"), 300);
+        }
+    </script>
+</body>
+</html>
